@@ -59,19 +59,19 @@
     <div id="box2" class="box" onclick="handleChoice('text2')"></div>
   </div>
 
-  <!-- Backend will replace this script tag with JSON data -->
   <script type="application/json" id="movies-data"></script>
 
   <script>
     try {
-      // Fetch the injected JSON data
       const moviesDataScript = document.getElementById("movies-data").textContent;
       const textSamples = JSON.parse(moviesDataScript);
 
       console.log("Parsed Text Samples:", textSamples);
 
       if (!textSamples || textSamples.length === 0) {
-        alert("No text samples available.");
+        console.error("No valid text samples available.");
+        alert("No text samples found. Please check the backend.");
+        throw new Error("Text samples not available.");
       }
 
       let currentText1, currentText2;
@@ -120,7 +120,8 @@
                     <h2>Extracted Weights and Biases:</h2>
                     <pre>${JSON.stringify(weightsAndBiases, null, 2)}</pre>
                   `;
-                });
+                })
+                .catch(err => console.error("Error training the network:", err));
             }
           })
           .catch(err => console.error("Error submitting feedback:", err));
